@@ -48,7 +48,7 @@ Template.registerHelper('Session', function(key, adds) {
  *
  */
 Template.registerHelper('log', function(key, adds) {
-    console.log(arguments, this);
+    console.log('arguments: ', arguments, 'this: ',this);
     return JSON.stringify(key, null, 2) + ' | ' + JSON.stringify(adds, null, 2);
 });
 

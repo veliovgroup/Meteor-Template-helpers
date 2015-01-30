@@ -5,6 +5,13 @@ Add functionality to:
  - compare values in conditions - `{{#if isEqual this.one this.two}}`
  - debug/log passed objects as a string to template - `{{log this.someVal 'string' object="value"}}`
 
+
+Install:
+========
+```shell
+meteor add ostrio:templatehelpers
+```
+
 #### `Session`
 Get or set session value from views via Session helper
 ```html
