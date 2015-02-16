@@ -25,14 +25,49 @@ Get or set session value from views via Session helper
 {{Session 'key' set="new value" action="setDefault"}}
 ```
 
-#### `isEqual` & `isNotEqual`
+#### `log` aka debug
+Log arguments into browser's console, and output into template
+```html
+{{log 'val' opt='val2' opt2=variable}}
+```
+
+#### Underscore (all functions)
+Execute underscore functions in template
+```html
+{{#if _ 'isString' 'one'}}
+  ...
+{{/if}}
+```
+
+#### Compare functions
 Compare two values in template
 ```html
-<!-- To compare if values is equal -->
-{{isEqual 'one' 'one'}} <!-- true -->
-{{isEqual 'one' 'two'}} <!-- false -->
+{{compare 'one' '>' 'two'}}
+{{gt 'one' 'two'}}
+{{greaterThan 'one' 'two'}}
 
-<!-- To compare if values isn't equal -->
-{{isNotEqual 'one' 'one'}} <!-- false -->
-{{isNotEqual 'one' 'two'}} <!-- true -->
+{{compare 'one' '>=' 'two'}}
+{{gte 'one' 'two'}}
+{{greaterThanEqual 'one' 'two'}}
+
+{{compare 'one' '<' 'two'}}
+{{lt 'one' 'two'}}
+{{lessThan 'one' 'two'}}
+
+{{compare 'one' '<=' 'two'}}
+{{lte 'one' 'two'}}
+{{lessThanEqual 'one' 'two'}}
+
+{{compare 'one' '===' 'two'}}
+{{is 'one' 'two'}}
+
+{{compare 'one' '!==' 'two'}}
+{{isnt 'one' 'two'}}
+
+{{compare 'one' '==' 'two'}}
+{{isEqual 'one' 'two'}}
+
+{{compare 'one' '!=' 'two'}}
+{{isNotEqual 'one' 'two'}}
+
 ```

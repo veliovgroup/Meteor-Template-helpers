@@ -1,3 +1,9 @@
+/*jshint strict:false */
+/*global Template:false */
+/*global _:false */
+/*global Session:false */
+/*global console:false */
+
 /*
  * @description Get or set session value from views via Session helper
  * @example
@@ -48,7 +54,7 @@ Template.registerHelper('Session', function(key, adds) {
  *
  */
 Template.registerHelper('log', function(key, adds) {
-    console.log('arguments: ', arguments, 'this: ',this);
+    console.log('arguments: ', arguments, 'this: ', this);
     return JSON.stringify(key, null, 2) + ' | ' + JSON.stringify(adds, null, 2);
 });
 
@@ -58,37 +64,85 @@ Template.registerHelper('log', function(key, adds) {
  * @description Compare two values in template
  *
  */
-Template.registerHelper('isEqual', function(key, adds, trueOutput) {
-    trueOutput = (_.isString(trueOutput)) ? trueOutput : false;
-    if(_.isObject(key) && _.isObject(adds)){
-        if(JSON.stringify(key) === JSON.stringify(adds)){
-            return (trueOutput) ? trueOutput : true;
-        }
-    }else{
-        if(key === adds){
-            return (trueOutput) ? trueOutput : true;
-        }
+var compare = function(operator, first, second){
+    if(_.isObject(first) && _.isObject(second)){
+        first = JSON.stringify(first);
+        second = JSON.stringify(second);
     }
+    
+    switch (operator){
+        case '>':
+        case 'gt':
+        case 'greaterThan':
+            return (first > second);
 
-    return (trueOutput) ? null : false;
+        case '>=':
+        case 'gte':
+        case 'greaterThanEqual':
+            return (first >= second);
+
+        case '<':
+        case 'lt':
+        case 'lessThan':
+            return (first < second);
+
+        case '<=':
+        case 'lte':
+        case 'lessThanEqual':
+            return (first <= second);
+
+        case '===':
+        case 'is':
+            return (first === second);
+
+        case '!==':
+        case 'isnt':
+            return (first !== second);
+
+        case 'isEqual':
+        case '==':
+            return (first == second);
+
+        case 'isNotEqual':
+        case '!=':
+            return (first != second);
+    }
+};
+
+var compareOperators = [
+    'gt', 'greaterThan',
+    'gte', 'greaterThanEqual',
+    'lt', 'lessThan',
+    'lte', 'lessThanEqual',
+    'is',
+    'isnt',
+    'isEqual',
+    'isNotEqual'
+];
+
+var index, len;
+for (index = 0, len = compareOperators.length; index < len; ++index) {
+    Template.registerHelper(compareOperators[index], function() {
+        return compare(compareOperators[index], arguments[0], arguments[1]);
+    });
+}
+
+Template.registerHelper('compare', function() {
+    return compare(arguments[1], arguments[0], arguments[2]);
 });
 
 
 /*
  *
- * @description Compare two values in template
+ * @description Use underscore as a helper
  *
  */
-Template.registerHelper('isNotEqual', function(key, adds, falseOutput) {
-    falseOutput = (_.isString(falseOutput)) ? falseOutput : false;
-    if(_.isObject(key) && _.isObject(adds)){
-        if(JSON.stringify(key) === JSON.stringify(adds)){
-            return (falseOutput) ? falseOutput : false;
-        }
-    }else{
-        if(key === adds){
-            return (falseOutput) ? falseOutput : false;
-        }
-    }
-    return (falseOutput) ? null : true;
+Template.registerHelper('_', function() {
+  var args, fn, self;
+  args = _.toArray(arguments);
+  self = this;
+  fn = args[0];
+  args.shift();
+  args.pop();
+  return _[fn].apply(self, args);
 });
