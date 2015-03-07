@@ -106,26 +106,16 @@ var compare = function(operator, first, second){
         case 'isNotEqual':
         case '!=':
             return (first != second);
+
+        case '&&':
+        case 'and':
+            return (first && second);
+
+        case '||':
+        case 'or':
+            return (first || second);
     }
 };
-
-var compareOperators = [
-    'gt', 'greaterThan',
-    'gte', 'greaterThanEqual',
-    'lt', 'lessThan',
-    'lte', 'lessThanEqual',
-    'is',
-    'isnt',
-    'isEqual',
-    'isNotEqual'
-];
-
-var index, len;
-for (index = 0, len = compareOperators.length; index < len; ++index) {
-    Template.registerHelper(compareOperators[index], function() {
-        return compare(compareOperators[index], arguments[0], arguments[1]);
-    });
-}
 
 Template.registerHelper('compare', function() {
     return compare(arguments[1], arguments[0], arguments[2]);
