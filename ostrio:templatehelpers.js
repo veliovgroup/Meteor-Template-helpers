@@ -111,9 +111,27 @@ var compare = function(operator, first, second){
         case 'and':
             return (first && second);
 
+        case '&!':
+            return (first && !second);
+
+        case '!&':
+            return (!first && second);
+
         case '||':
         case 'or':
             return (first || second);
+
+        case 'nor':
+            return !(first || second);
+
+        case 'nand':
+            return !(first && second);
+
+        case 'xor':
+            return ((first && !second) || (!first && second));
+
+        case 'nxor':
+            return !((first && !second) || (!first && second));
     }
 };
 
