@@ -40,7 +40,7 @@ Execute underscore functions in template
 ```
 
 #### Compare functions
-Compare two values in template
+##### Compare two values in template
 ```html
 {{compare 'one' '>' 'two'}}
 {{compare 'one' 'gt' 'two'}}
@@ -72,8 +72,40 @@ Compare two values in template
 
 {{compare 'one' '&&' 'two'}}
 {{compare 'one' 'and' 'two'}}
+{{compare 'one' 'nand' 'two'}} <!-- !(first && second) -->
 
 {{compare 'one' '||' 'two'}}
 {{compare 'one' 'or' 'two'}}
+{{compare 'one' 'nor' 'two'}} <!-- !(first || second) -->
 
+{{compare 'one' 'xor' 'two'}} <!-- ((first && !second) || (!first && second)) -->
+{{compare 'one' 'nxor' 'two'}} <!-- !((first && !second) || (!first && second)) -->
+```
+
+##### Compare one value to many
+``html
+{{compare 'one' '>' 'two|one|three|four|five'}}
+
+{{compare 'one' '>=' 'two|one|three|four|five'}}
+
+{{compare 'one' '<' 'two|one|three|four'}}
+
+{{compare 'one' '<=' 'two|one|three'}}
+
+{{compare 'one' '===' 'two|one'}}
+
+{{compare 'one' '!==' 'two|one|three'}}
+
+{{compare 'one' '==' 'two|one|three|four'}}
+
+{{compare 'one' '!=' 'two|one|three|four'}}
+
+{{compare 'one' '&&' 'two|one|three|four'}}
+{{compare 'one' 'nand' 'two|one'}} <!-- !(first && second) -->
+
+{{compare 'one' '||' 'two|one|three|four|five'}}
+{{compare 'one' 'nor' 'two|one'}} <!-- !(first || second) -->
+
+{{compare 'one' 'xor' 'two|one|three'}} <!-- ((first && !second) || (!first && second)) -->
+{{compare 'one' 'nxor' 'two|one'}} <!-- !((first && !second) || (!first && second)) -->
 ```

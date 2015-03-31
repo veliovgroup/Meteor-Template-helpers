@@ -69,69 +69,80 @@ var compare = function(operator, first, second){
         first = JSON.stringify(first);
         second = JSON.stringify(second);
     }
+
+    if(_.isString(second) && second.indexOf('|') !== -1){
+        var Things = second.split('|')
+        var res = []
+        for (var i = Things.length - 1; i >= 0; i--) {
+            res.push(compare(operator, first, Things[i]));
+        };
+
+        return res.inArray(true);
+    }else{
     
-    switch (operator){
-        case '>':
-        case 'gt':
-        case 'greaterThan':
-            return (first > second);
+        switch (operator){
+            case '>':
+            case 'gt':
+            case 'greaterThan':
+                return (first > second);
 
-        case '>=':
-        case 'gte':
-        case 'greaterThanEqual':
-            return (first >= second);
+            case '>=':
+            case 'gte':
+            case 'greaterThanEqual':
+                return (first >= second);
 
-        case '<':
-        case 'lt':
-        case 'lessThan':
-            return (first < second);
+            case '<':
+            case 'lt':
+            case 'lessThan':
+                return (first < second);
 
-        case '<=':
-        case 'lte':
-        case 'lessThanEqual':
-            return (first <= second);
+            case '<=':
+            case 'lte':
+            case 'lessThanEqual':
+                return (first <= second);
 
-        case '===':
-        case 'is':
-            return (first === second);
+            case '===':
+            case 'is':
+                return (first === second);
 
-        case '!==':
-        case 'isnt':
-            return (first !== second);
+            case '!==':
+            case 'isnt':
+                return (first !== second);
 
-        case 'isEqual':
-        case '==':
-            return (first == second);
+            case 'isEqual':
+            case '==':
+                return (first == second);
 
-        case 'isNotEqual':
-        case '!=':
-            return (first != second);
+            case 'isNotEqual':
+            case '!=':
+                return (first != second);
 
-        case '&&':
-        case 'and':
-            return (first && second);
+            case '&&':
+            case 'and':
+                return (first && second);
 
-        case '&!':
-            return (first && !second);
+            case '&!':
+                return (first && !second);
 
-        case '!&':
-            return (!first && second);
+            case '!&':
+                return (!first && second);
 
-        case '||':
-        case 'or':
-            return (first || second);
+            case '||':
+            case 'or':
+                return (first || second);
 
-        case 'nor':
-            return !(first || second);
+            case 'nor':
+                return !(first || second);
 
-        case 'nand':
-            return !(first && second);
+            case 'nand':
+                return !(first && second);
 
-        case 'xor':
-            return ((first && !second) || (!first && second));
+            case 'xor':
+                return ((first && !second) || (!first && second));
 
-        case 'nxor':
-            return !((first && !second) || (!first && second));
+            case 'nxor':
+                return !((first && !second) || (!first && second));
+        }
     }
 };
 
