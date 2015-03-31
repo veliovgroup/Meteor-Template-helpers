@@ -83,7 +83,7 @@ Execute underscore functions in template
 ```
 
 ##### Compare one value to many
-``html
+```html
 {{compare 'one' '>' 'two|one|three|four|five'}}
 
 {{compare 'one' '>=' 'two|one|three|four|five'}}
