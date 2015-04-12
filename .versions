@@ -1,5 +1,5 @@
 base64@1.0.3
-blaze@2.1.1
+blaze@2.1.2
 blaze-tools@1.0.3
 deps@1.0.7
 ejson@1.0.6
@@ -15,7 +15,7 @@ minimongo@1.0.8
 observe-sequence@1.0.6
 ordered-dict@1.0.3
 ostrio:jsextensions@0.0.4
-ostrio:templatehelpers@0.3.0
+ostrio:templatehelpers@0.3.1
 random@1.0.3
 reactive-var@1.0.5
 spacebars-compiler@1.0.6

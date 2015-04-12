@@ -71,11 +71,11 @@ var compare = function(operator, first, second){
     }
 
     if(_.isString(second) && second.indexOf('|') !== -1){
-        var Things = second.split('|')
-        var res = []
+        var Things = second.split('|');
+        var res = [];
         for (var i = Things.length - 1; i >= 0; i--) {
             res.push(compare(operator, first, Things[i]));
-        };
+        }
 
         return res.inArray(true);
     }else{
