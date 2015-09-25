@@ -14,7 +14,6 @@
  */
 Template.registerHelper('Session', function(key, adds) {
     var set, action;
-
     if(_.isUndefined(adds)){
         action = 'get';
     }
@@ -27,18 +26,18 @@ Template.registerHelper('Session', function(key, adds) {
         action = 'get';
         if(_.has(adds.hash, 'set')){
             action = (_.has(adds.hash, 'action')) ? adds.hash.action : 'set';
-            set = adds.hash.set || ' ';
+            set = adds.hash.set || undefined;
         }
     }
 
     switch(action){
         case 'setDefault':
             Session.setDefault(key, set);
-            return Session.get(key);
+            return undefined;
 
         case 'set':
             Session.set(key, set);
-            return Session.get(key);
+            return undefined;
 
         case 'get':
         default:
@@ -77,7 +76,7 @@ var compare = function(operator, first, second){
             res.push(compare(operator, first, Things[i]));
         }
 
-        return res.inArray(true);
+        return !!~res.indexOf(true);
     }else{
     
         switch (operator){

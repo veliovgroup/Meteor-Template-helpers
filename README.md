@@ -70,6 +70,9 @@ Execute underscore functions in template
 {{compare 'one' '!=' 'two'}}
 {{compare 'one' 'isNotEqual' 'two'}}
 
+{{compare 'one' '&!' 'two'}} <!-- (first && !second) -->
+{{compare 'one' '!&' 'two'}} <!-- (!first && second) -->
+
 {{compare 'one' '&&' 'two'}}
 {{compare 'one' 'and' 'two'}}
 {{compare 'one' 'nand' 'two'}} <!-- !(first && second) -->
