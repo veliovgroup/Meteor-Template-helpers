@@ -1,8 +1,9 @@
 Meteor Template helpers 
 ========
 Add functionality to:
- - get/set Session - `{{Session 'key'}}`
- - compare values in conditions - `{{#if this.one '===' this.two}}`
+ - get/set Session - `{{Session 'key' set='value'}}`, `{{#if Session 'key'}} ... {{/if}}`
+ - compare values in conditions - `{{#if compare one '===' two}} ... {{/if}}`
+ - use underscore's functions - `{{#if _ 'isString' 'one'}} ... {{/if}}`
  - debug/log passed objects as a string to template - `{{log this.someVal 'string' object="value"}}`
 
 
