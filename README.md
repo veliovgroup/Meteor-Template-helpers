@@ -6,6 +6,10 @@ Add functionality to:
  - use underscore's functions - `{{#if _ 'isString' 'one'}} ... {{/if}}`
  - debug/log passed objects as a string to template - `{{log this.someVal 'string' object="value"}}`
 
+DEMO:
+========
+ - [Live](http://templatehelpers.meteor.com)
+ - [Source](https://github.com/VeliovGroup/Meteor-Template-helpers/tree/master/demo)
 
 Install:
 ========
@@ -71,45 +75,49 @@ Execute underscore functions in template
 {{compare 'one' '!=' 'two'}}
 {{compare 'one' 'isNotEqual' 'two'}}
 
-{{compare 'one' '&!' 'two'}} <!-- (first && !second) -->
-{{compare 'one' '!&' 'two'}} <!-- (!first && second) -->
-
 {{compare 'one' '&&' 'two'}}
 {{compare 'one' 'and' 'two'}}
-{{compare 'one' 'nand' 'two'}} <!-- !(first && second) -->
+
+{{compare 'one' '&!' 'two'}} <!-- (a && !b) -->
+{{compare 'one' '!&' 'two'}} <!-- (!a && b) -->
+{{compare 'one' '!&!' 'two'}} <!-- (!a && !b) -->
+{{compare 'one' '!&&' 'two'}} <!-- !(a && b) -->
+{{compare 'one' 'nand' 'two'}} <!-- !(a && b) -->
 
 {{compare 'one' '||' 'two'}}
 {{compare 'one' 'or' 'two'}}
-{{compare 'one' 'nor' 'two'}} <!-- !(first || second) -->
+<!-- Or statements returns real values -->
+<!-- For example you have one falsy value and another not -->
+<!-- Truthy value will be returned then (as in real JS-script) -->
 
-{{compare 'one' 'xor' 'two'}} <!-- ((first && !second) || (!first && second)) -->
-{{compare 'one' 'nxor' 'two'}} <!-- !((first && !second) || (!first && second)) -->
+{{compare 'one' '|!' 'two'}} <!-- (a || !b) -->
+{{compare 'one' '!|' 'two'}} <!-- (!a || b) -->
+{{compare 'one' '!|!' 'two'}} <!-- (!a || !b) -->
+{{compare 'one' '!||' 'two'}} <!-- !(a || b) -->
+{{compare 'one' 'nor' 'two'}} <!-- !(a || b) -->
+
+{{compare 'one' 'xor' 'two'}} <!-- ((a && !b) || (!a && b)) -->
+{{compare 'one' 'nxor' 'two'}} <!-- !((a && !b) || (!a && b)) -->
+```
+##### Compare many to many
+```html
+{{compare 1 '>' 2 '&&' 5 '<' 8}}
+{{compare 1 '>' 2 '||' 5 '<' 8}}
+{{compare first '||' second '||' third}}
+{{compare first '&&' second '&&' third}}
+{{compare first '&&' second '||' third}}
+<!-- Any combinations will work, above just basic examples -->
 ```
 
-##### Compare one value to many
+##### Compare one value to many (any of.. match)
 ```html
 {{compare 'one' '>' 'two|one|three|four|five'}}
-
 {{compare 'one' '>=' 'two|one|three|four|five'}}
-
 {{compare 'one' '<' 'two|one|three|four'}}
-
 {{compare 'one' '<=' 'two|one|three'}}
-
 {{compare 'one' '===' 'two|one'}}
-
 {{compare 'one' '!==' 'two|one|three'}}
-
 {{compare 'one' '==' 'two|one|three|four'}}
-
 {{compare 'one' '!=' 'two|one|three|four'}}
-
 {{compare 'one' '&&' 'two|one|three|four'}}
-{{compare 'one' 'nand' 'two|one'}} <!-- !(first && second) -->
-
-{{compare 'one' '||' 'two|one|three|four|five'}}
-{{compare 'one' 'nor' 'two|one'}} <!-- !(first || second) -->
-
-{{compare 'one' 'xor' 'two|one|three'}} <!-- ((first && !second) || (!first && second)) -->
-{{compare 'one' 'nxor' 'two|one'}} <!-- !((first && !second) || (!first && second)) -->
 ```
