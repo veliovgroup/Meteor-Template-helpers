@@ -100,7 +100,7 @@ var compare = function(args){
         if(_.isString(second) && second.indexOf('|') !== -1){
             var Things = second.split('|');
             for (var i = Things.length - 1; i >= 0; i--) {
-                res.push(compare(operator, first, Things[i]));
+                res.push(compare([first, operator, Things[i]]));
             }
 
             return !!~res.indexOf(true);
