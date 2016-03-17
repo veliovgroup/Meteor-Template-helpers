@@ -64,7 +64,7 @@ Template.registerHelper('log', function(key, adds) {
  *
  */
 var compare = function(args){
-    var res = [];
+    var res = [], operator;
     if(args.length > 3){
         var andy = true;
         var currentState = args[0];
@@ -91,7 +91,8 @@ var compare = function(args){
         }
 
     } else {
-        var first = args[0], second = args[2], operator = args[1];
+        var first = args[0], second = args[2];
+        operator = args[1];
         if(_.isObject(first) && _.isObject(second)){
             first = JSON.stringify(first);
             second = JSON.stringify(second);
@@ -99,8 +100,8 @@ var compare = function(args){
 
         if(_.isString(second) && second.indexOf('|') !== -1){
             var Things = second.split('|');
-            for (var i = Things.length - 1; i >= 0; i--) {
-                res.push(compare([first, operator, Things[i]]));
+            for (var j = Things.length - 1; j >= 0; j--) {
+                res.push(compare([first, operator, Things[j]]));
             }
 
             return !!~res.indexOf(true);
@@ -192,7 +193,7 @@ var compare = function(args){
 };
 
 Template.registerHelper('compare', function() {
-    args = Array.prototype.slice.call(arguments);
+    var args = Array.prototype.slice.call(arguments);
     args.pop();
     return compare.call(null, args);
 });
