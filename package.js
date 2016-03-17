@@ -9,5 +9,5 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('1.0');
   api.use(['templating', 'underscore'], 'client');
-  api.addFiles('ostrio:templatehelpers.js', 'client');
+  api.addFiles('templatehelpers.js', 'client');
 });
