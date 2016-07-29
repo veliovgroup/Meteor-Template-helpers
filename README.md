@@ -8,7 +8,7 @@ Add functionality to:
 
 DEMO:
 ========
- - [Live](http://templatehelpers.meteor.com)
+ - ~~[Live](http://templatehelpers.meteor.com)~~
  - [Source](https://github.com/VeliovGroup/Meteor-Template-helpers/tree/master/demo)
 
 Install:
