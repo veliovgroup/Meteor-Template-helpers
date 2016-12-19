@@ -6,11 +6,6 @@ Add functionality to:
  - use underscore's functions - `{{#if _ 'isString' 'one'}} ... {{/if}}`
  - debug/log passed objects as a string to template - `{{log this.someVal 'string' object="value"}}`
 
-DEMO:
-========
- - ~~[Live](http://templatehelpers.meteor.com)~~
- - [Source](https://github.com/VeliovGroup/Meteor-Template-helpers/tree/master/demo)
-
 Install:
 ========
 ```shell
