@@ -21,7 +21,7 @@ modules@0.7.5
 modules-runtime@0.7.5
 mongo-id@1.0.5
 observe-sequence@1.0.12
-ostrio:templatehelpers@2.0.0
+ostrio:templatehelpers@2.0.1
 promise@0.8.3
 random@1.0.9
 reactive-var@1.0.10

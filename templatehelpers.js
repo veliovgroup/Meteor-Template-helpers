@@ -1,10 +1,3 @@
-/*jshint strict:false */
-/*global Template:false */
-/*global _:false */
-/*global Session:false */
-/*global console:false */
-/* jshint esversion:6 */
-
 class TemplateHelpers {
   constructor() {}
   session(key, adds) {
@@ -27,16 +20,16 @@ class TemplateHelpers {
     }
 
     switch(action){
-      case 'setDefault':
-        Session.setDefault(key, set);
-        return;
+    case 'setDefault':
+      Session.setDefault(key, set);
+      return;
 
-      case 'set':
-        Session.set(key, set);
-        return;
+    case 'set':
+      Session.set(key, set);
+      return;
 
-      default:
-        return Session.get(key);
+    default:
+      return Session.get(key);
     }
   }
 
@@ -77,110 +70,107 @@ class TemplateHelpers {
       }
       if(andy){
         return !~res.indexOf(false) && !~res.indexOf(undefined) && !~res.indexOf(null);
-      } else {
-        return !!~res.indexOf(true);
+      }
+      return !!~res.indexOf(true);
+    }
+
+    let first = args[0];
+    let second = args[2];
+    operator = args[1];
+    if(_.isObject(first) && _.isObject(second)){
+      first = JSON.stringify(first);
+      second = JSON.stringify(second);
+    }
+
+    if(_.isString(second) && second.includes('|')){
+      const inclusive = second.split('|');
+      for (let j = inclusive.length - 1; j >= 0; j--) {
+        res.push(templatehelpers.compare(first, operator, inclusive[j]));
       }
 
-    } else {
-      let first = args[0];
-      let second = args[2];
-      operator = args[1];
-      if(_.isObject(first) && _.isObject(second)){
-        first = JSON.stringify(first);
-        second = JSON.stringify(second);
-      }
+      return !!~res.indexOf(true);
+    }
 
-      if(_.isString(second) && second.includes('|')){
-        const inclusive = second.split('|');
-        for (let j = inclusive.length - 1; j >= 0; j--) {
-          res.push(templatehelpers.compare(first, operator, inclusive[j]));
-        }
+    switch (operator){
+    case '>':
+    case 'gt':
+    case 'greaterThan':
+      return (first > second);
 
-        return !!~res.indexOf(true);
-      }else{
-      
-        switch (operator){
-          case '>':
-          case 'gt':
-          case 'greaterThan':
-            return (first > second);
+    case '>=':
+    case 'gte':
+    case 'greaterThanEqual':
+      return (first >= second);
 
-          case '>=':
-          case 'gte':
-          case 'greaterThanEqual':
-            return (first >= second);
+    case '<':
+    case 'lt':
+    case 'lessThan':
+      return (first < second);
 
-          case '<':
-          case 'lt':
-          case 'lessThan':
-            return (first < second);
+    case '<=':
+    case 'lte':
+    case 'lessThanEqual':
+      return (first <= second);
 
-          case '<=':
-          case 'lte':
-          case 'lessThanEqual':
-            return (first <= second);
+    case '===':
+    case 'is':
+      return (first === second);
 
-          case '===':
-          case 'is':
-            return (first === second);
+    case '!==':
+    case 'isnt':
+      return (first !== second);
 
-          case '!==':
-          case 'isnt':
-            return (first !== second);
+    case 'isEqual':
+    case '==':
+      return (first == second);
 
-          case 'isEqual':
-          case '==':
-            return (first == second);
+    case 'isNotEqual':
+    case '!=':
+      return (first != second);
 
-          case 'isNotEqual':
-          case '!=':
-            return (first != second);
+    case '&&':
+    case 'and':
+      return (first && second);
 
-          case '&&':
-          case 'and':
-            return (first && second);
+    case '&!':
+      return (first && !second);
 
-          case '&!':
-            return (first && !second);
+    case '!&':
+      return (!first && second);
 
-          case '!&':
-            return (!first && second);
+    case '!&!':
+      return (!first && !second);
 
-          case '!&!':
-            return (!first && !second);
+    case '||':
+    case 'or':
+      return (first || second);
 
-          case '||':
-          case 'or':
-            return (first || second);
+    case '!|':
+      return (!first || second);
 
-          case '!|':
-            return (!first || second);
+    case '|!':
+      return (first || !second);
 
-          case '|!':
-            return (first || !second);
+    case '!|!':
+      return (!first || !second);
 
-          case '!|!':
-            return (!first || !second);
+    case '!||':
+    case 'nor':
+      return !(first || second);
 
-          case '!||':
-          case 'nor':
-            return !(first || second);
+    case '!&&':
+    case 'nand':
+      return !(first && second);
 
-          case '!&&':
-          case 'nand':
-            return !(first && second);
+    case 'xor':
+      return ((first && !second) || (!first && second));
 
-          case 'xor':
-            return ((first && !second) || (!first && second));
+    case 'nxor':
+      return !((first && !second) || (!first && second));
 
-          case 'nxor':
-            return !((first && !second) || (!first && second));
-
-          default:
-            console.error(`[ostrio:templatehelpers] [comparison operator: "${operator}" is not supported!]`);
-            return false;
-        }
-      }
+    default:
+      console.error(`[ostrio:templatehelpers] [comparison operator: "${operator}" is not supported!]`);
+      return false;
     }
   }
 
@@ -193,7 +183,7 @@ class TemplateHelpers {
       args.shift();
       return _[fn].apply(_, args);
     }
-    return;
+    return void 0;
   }
 }
 
@@ -209,13 +199,11 @@ export { templatehelpers };
  */
 Template.registerHelper('Session', templatehelpers.session);
 
-
 /*
  * @description Debug helper console log
  * and return passed objects as a string
  */
 Template.registerHelper('log', templatehelpers.log);
-
 
 /*
  * @description Compare two or more arguments in template
