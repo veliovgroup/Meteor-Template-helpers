@@ -1,8 +1,24 @@
+import { _ }         from 'meteor/underscore';
+import { Meteor }    from 'meteor/meteor';
+import { Template }  from 'meteor/templating';
+import { Spacebars } from 'meteor/spacebars';
+
+let Session = false;
+try {
+  Session = require('meteor/session');
+} catch (e) {
+  // session package is not installed
+}
+
 class TemplateHelpers {
   constructor() {}
   session(key, adds) {
     let set;
     let action;
+    if (!Session) {
+      throw new Meteor.Error(404, '"session" package is missing, install it first: "meteor add session"');
+    }
+
     if(_.isUndefined(adds)){
       action = 'get';
     }
@@ -22,11 +38,11 @@ class TemplateHelpers {
     switch(action){
     case 'setDefault':
       Session.setDefault(key, set);
-      return;
+      return void 0;
 
     case 'set':
       Session.set(key, set);
-      return;
+      return void 0;
 
     default:
       return Session.get(key);

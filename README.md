@@ -14,7 +14,7 @@ meteor add ostrio:templatehelpers
 
 #### `Session`
 Get or set session value from views via Session helper
-```html
+```handlebars
 <!-- To get value -->
 {{Session 'key'}}
 
@@ -27,13 +27,13 @@ Get or set session value from views via Session helper
 
 #### `log` aka debug
 Log arguments into browser's console, and output into template
-```html
+```handlebars
 {{log 'val' opt='val2' opt2=variable}}
 ```
 
 #### Underscore (all functions)
 Execute underscore functions in template
-```html
+```handlebars
 {{#if _ 'isString' 'one'}}
   ...
 {{/if}}
@@ -41,8 +41,10 @@ Execute underscore functions in template
 
 #### Compare functions
 ##### Compare two values in template
-```html
-{{compare 'one' '>' 'two'}}
+```handlebars
+{{#if compare 'one' '>' 'two'}}
+  <!-- ... -->
+{{/if}}
 {{compare 'one' 'gt' 'two'}}
 {{compare 'one' 'greaterThan' 'two'}}
 
@@ -95,8 +97,10 @@ Execute underscore functions in template
 {{compare 'one' 'nxor' 'two'}} <!-- !((a && !b) || (!a && b)) -->
 ```
 ##### Compare many to many
-```html
-{{compare 1 '>' 2 '&&' 5 '<' 8}}
+```handlebars
+{{#if compare 1 '>' 2 '&&' 5 '<' 8}}
+  <!-- ... -->
+{{/if}}
 {{compare 1 '>' 2 '||' 5 '<' 8}}
 {{compare first '||' second '||' third}}
 {{compare first '&&' second '&&' third}}
@@ -105,8 +109,10 @@ Execute underscore functions in template
 ```
 
 ##### Compare one value to many (any of.. match)
-```html
-{{compare 'one' '>' 'two|one|three|four|five'}}
+```handlebars
+{{#if compare 'one' '>' 'two|one|three|four|five'}}
+  <!-- ... -->
+{{/if}}
 {{compare 'one' '>=' 'two|one|three|four|five'}}
 {{compare 'one' '<' 'two|one|three|four'}}
 {{compare 'one' '<=' 'two|one|three'}}
