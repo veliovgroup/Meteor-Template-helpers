@@ -1,10 +1,10 @@
 Meteor Template helpers 
 ========
-Add functionality to:
- - get/set Session - `{{Session 'key' set='value'}}`, `{{#if Session 'key'}} ... {{/if}}`
- - compare values in conditions - `{{#if compare one '===' two}} ... {{/if}}`
- - use underscore's functions - `{{#if _ 'isString' 'one'}} ... {{/if}}`
- - debug/log passed objects as a string to template - `{{log this.someVal 'string' object="value"}}`
+Extend templates with:
+ - Compare values with conditions - `{{#if compare one '===' two}} ... {{/if}}`;
+ - Get/set Session - `{{Session 'key' set='value'}}`, `{{#if Session 'key'}} ... {{/if}}`;
+ - Use underscore's functions - `{{#if _ 'isString' 'one'}} ... {{/if}}`;
+ - Debug/log passed objects as a string to template - `{{log this.someVal 'string' object="value"}}`.
 
 Install:
 ========
@@ -25,8 +25,8 @@ Get or set session value from views via Session helper
 {{Session 'key' set="new value" action="setDefault"}}
 ```
 
-#### `log` aka debug
-Log arguments into browser's console, and output into template
+#### `log`
+Template debugging - Log arguments into browser's console with output into template
 ```handlebars
 {{log 'val' opt='val2' opt2=variable}}
 ```
