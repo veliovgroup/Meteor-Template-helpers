@@ -6,8 +6,8 @@ import { Spacebars } from 'meteor/spacebars';
 
 let Session = false;
 try {
-  // Session = require('meteor/session');
-  import { Session } from 'meteor/session';
+  Session = require('meteor/session').Session;
+  // import { Session } from 'meteor/session';
 } catch (e) {
   // session package is not installed
 }
