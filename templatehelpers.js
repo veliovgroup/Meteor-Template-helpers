@@ -2,7 +2,15 @@ import { _ }         from 'meteor/underscore';
 import { Meteor }    from 'meteor/meteor';
 import { Template }  from 'meteor/templating';
 import { Spacebars } from 'meteor/spacebars';
-import { Session }   from 'meteor/session';
+// import { Session }   from 'meteor/session';
+
+let Session = false;
+try {
+  // Session = require('meteor/session');
+  import { Session } from 'meteor/session';
+} catch (e) {
+  // session package is not installed
+}
 
 class TemplateHelpers {
   constructor() {}
@@ -75,7 +83,7 @@ class TemplateHelpers {
       second = JSON.stringify(second);
     }
 
-    if(_.isString(second) && second.includes('|')){
+    if(_.isString(second) && !!~second.indexOf('|')){
       const inclusive = second.split('|');
       for (let j = 0; j < inclusive.length; j++) {
         res.push(templatehelpers.compare(first, operator, inclusive[j]));
