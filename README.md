@@ -1,6 +1,7 @@
 Meteor Template helpers 
 ========
-Extend templates with:
+Features:
+ - 100% tests coverage
  - Compare values with conditions - `{{#if compare one '===' two}} ... {{/if}}`;
  - Get/set Session - `{{Session 'key' set='value'}}`, `{{#if Session 'key'}} ... {{/if}}`;
  - Use underscore's functions - `{{#if _ 'isString' 'one'}} ... {{/if}}`;
@@ -31,15 +32,15 @@ Template debugging - Log arguments into browser's console with output into templ
 {{log 'val' opt='val2' opt2=variable}}
 ```
 
-#### Underscore (all functions)
-Execute underscore functions in template
+#### Underscore (all methods)
+Execute underscore methods in template
 ```handlebars
 {{#if _ 'isString' 'one'}}
   ...
 {{/if}}
 ```
 
-#### Compare functions
+#### Compare helpers
 ##### Compare two values in template
 ```handlebars
 {{#if compare 'one' '>' 'two'}}
@@ -96,6 +97,7 @@ Execute underscore functions in template
 {{compare 'one' 'xor' 'two'}} <!-- ((a && !b) || (!a && b)) -->
 {{compare 'one' 'nxor' 'two'}} <!-- !((a && !b) || (!a && b)) -->
 ```
+
 ##### Compare many to many
 ```handlebars
 {{#if compare 1 '>' 2 '&&' 5 '<' 8}}
