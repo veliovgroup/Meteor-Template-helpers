@@ -2,7 +2,7 @@ import { _ }         from 'meteor/underscore';
 import { Meteor }    from 'meteor/meteor';
 import { Template }  from 'meteor/templating';
 import { Spacebars } from 'meteor/spacebars';
-import { Session }   from 'meteor/session'
+import { Session }   from 'meteor/session';
 
 class TemplateHelpers {
   constructor() {}
@@ -23,7 +23,7 @@ class TemplateHelpers {
 
     if(_.isObject(adds)){
       action = 'get';
-      if(_.has(adds.hash, 'set')){
+      if(adds.hash && _.has(adds.hash, 'set')){
         action = (_.has(adds.hash, 'action')) ? adds.hash.action : 'set';
         set = adds.hash.set || undefined;
       }
@@ -57,36 +57,19 @@ class TemplateHelpers {
     if (args[args.length - 1] instanceof Spacebars.kw) {
       args.pop();
     }
-    let res = [];
-    let operator;
-    if(args.length > 3){
-      let andy = true;
-      let currentState = args[0];
-      for (let i = 0; i < args.length - 1; ) {
-        operator = args[++i];
-        if(!!~['or', '||', '!|', '|!', '!|!', 'nor', 'xor', 'nxor', '!||'].indexOf(operator)){
-          andy = false;
-        }
 
-        if(!!~['and', '&&', '!&', '&!', '!&!', 'nand', '!&&'].indexOf(operator)){
-          res = [!!~res.indexOf(true)];
-          if(args.length > i + 2){
-            currentState = args[++i];
-            operator = args[++i];
-          }
-        }
-        res.push(!!templatehelpers.compare(currentState, operator, args[++i]));
-        currentState = args[i];
+    const res = [];
+    if(args.length > 3){
+      res.push(args[0]);
+      for (let i = 0; i < args.length - 1; ) {
+        res.push(templatehelpers.compare(res[res.length - 1], args[++i], args[++i]));
       }
-      if(andy){
-        return !~res.indexOf(false) && !~res.indexOf(undefined) && !~res.indexOf(null);
-      }
-      return !!~res.indexOf(true);
+      return res[res.length - 1];
     }
 
     let first = args[0];
     let second = args[2];
-    operator = args[1];
+    const operator = args[1];
     if(_.isObject(first) && _.isObject(second)){
       first = JSON.stringify(first);
       second = JSON.stringify(second);
@@ -94,11 +77,14 @@ class TemplateHelpers {
 
     if(_.isString(second) && second.includes('|')){
       const inclusive = second.split('|');
-      for (let j = inclusive.length - 1; j >= 0; j--) {
+      for (let j = 0; j < inclusive.length; j++) {
         res.push(templatehelpers.compare(first, operator, inclusive[j]));
+        if (res[res.length - 1] === true) {
+          return true;
+        }
       }
 
-      return !!~res.indexOf(true);
+      return res[res.length - 1];
     }
 
     switch (operator){
@@ -185,6 +171,10 @@ class TemplateHelpers {
   }
 
   underscore(...args) {
+    if (!_) {
+      throw new Meteor.Error(404, '"underscore" package is missing, install it first: "meteor add underscore"');
+    }
+
     if(args.length){
       if (args[args.length - 1] instanceof Spacebars.kw) {
         args.pop();
@@ -198,7 +188,6 @@ class TemplateHelpers {
 }
 
 const templatehelpers = new TemplateHelpers();
-export { templatehelpers };
 
 /*
  * @description Get or set session value from views via Session helper
@@ -224,3 +213,5 @@ Template.registerHelper('compare', templatehelpers.compare);
  * @description Use underscore as a helper
  */
 Template.registerHelper('_', templatehelpers.underscore);
+
+export { templatehelpers };
