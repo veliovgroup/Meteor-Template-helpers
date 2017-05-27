@@ -2,12 +2,10 @@ import { _ }         from 'meteor/underscore';
 import { Meteor }    from 'meteor/meteor';
 import { Template }  from 'meteor/templating';
 import { Spacebars } from 'meteor/spacebars';
-// import { Session }   from 'meteor/session';
 
 let Session = false;
 try {
   Session = require('meteor/session').Session;
-  // import { Session } from 'meteor/session';
 } catch (e) {
   // session package is not installed
 }
