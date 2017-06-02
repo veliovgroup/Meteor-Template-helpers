@@ -1,7 +1,5 @@
-import { _ }         from 'meteor/underscore';
-import { Meteor }    from 'meteor/meteor';
-import { Template }  from 'meteor/templating';
-import { Spacebars } from 'meteor/spacebars';
+import { Meteor }   from 'meteor/meteor';
+import { Template } from 'meteor/templating';
 
 let Session = false;
 try {
@@ -10,8 +8,31 @@ try {
   // session package is not installed
 }
 
+let _ = false;
+try {
+  _ = require('meteor/underscore')._;
+} catch (e) {
+  // underscore package is not installed
+}
+
 class TemplateHelpers {
-  constructor() {}
+  constructor() {
+    ['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp'].forEach((name) =>  {
+      this['_is' + name] = (obj) => {
+        return this._toString(obj) === `[object ${name}]`;
+      };
+    });
+  }
+  _toString(obj) {
+    return Object.prototype.toString.call(obj);
+  }
+  _isObject(obj) {
+    const type = typeof obj;
+    return type === 'function' || type === 'object' && !!obj;
+  }
+  _isUndefined(obj) {
+    return obj === void 0;
+  }
   session(key, adds) {
     let set;
     let action;
@@ -19,23 +40,23 @@ class TemplateHelpers {
       throw new Meteor.Error(404, '"session" package is missing, install it first: "meteor add session"');
     }
 
-    if(_.isUndefined(adds)){
+    if (this._isUndefined(adds)) {
       action = 'get';
     }
 
-    if(_.isString(adds)){
+    if (this._isString(adds)) {
       action = 'get';
     }
 
-    if(_.isObject(adds)){
+    if (this._isObject(adds)) {
       action = 'get';
-      if(adds.hash && _.has(adds.hash, 'set')){
-        action = (_.has(adds.hash, 'action')) ? adds.hash.action : 'set';
+      if (adds.hash && adds.hash.set) {
+        action = (adds.hash.action) ? adds.hash.action : 'set';
         set = adds.hash.set || undefined;
       }
     }
 
-    switch(action){
+    switch (action) {
     case 'setDefault':
       Session.setDefault(key, set);
       return void 0;
@@ -60,12 +81,12 @@ class TemplateHelpers {
   }
 
   compare(...args) {
-    if (args[args.length - 1] instanceof Spacebars.kw) {
+    if (args[args.length - 1] && this._isObject(args[args.length - 1]) && args[args.length - 1].hasOwnProperty('hash')) {
       args.pop();
     }
 
     const res = [];
-    if(args.length > 3){
+    if (args.length > 3) {
       res.push(args[0]);
       for (let i = 0; i < args.length - 1; ) {
         res.push(templatehelpers.compare(res[res.length - 1], args[++i], args[++i]));
@@ -76,12 +97,12 @@ class TemplateHelpers {
     let first = args[0];
     let second = args[2];
     const operator = args[1];
-    if(_.isObject(first) && _.isObject(second)){
+    if (this._isObject(first) && this._isObject(second)) {
       first = JSON.stringify(first);
       second = JSON.stringify(second);
     }
 
-    if(_.isString(second) && !!~second.indexOf('|')){
+    if (this._isString(second) && !!~second.indexOf('|')) {
       const inclusive = second.split('|');
       for (let j = 0; j < inclusive.length; j++) {
         res.push(templatehelpers.compare(first, operator, inclusive[j]));
@@ -93,7 +114,7 @@ class TemplateHelpers {
       return res[res.length - 1];
     }
 
-    switch (operator){
+    switch (operator) {
     case '>':
     case 'gt':
     case 'greaterThan':
@@ -181,8 +202,8 @@ class TemplateHelpers {
       throw new Meteor.Error(404, '"underscore" package is missing, install it first: "meteor add underscore"');
     }
 
-    if(args.length){
-      if (args[args.length - 1] instanceof Spacebars.kw) {
+    if (args.length) {
+      if (this._isObject(args[args.length - 1]) && args[args.length - 1].hasOwnProperty('hash')) {
         args.pop();
       }
       const fn = args[0];
