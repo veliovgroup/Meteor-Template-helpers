@@ -1,6 +1,6 @@
 import { Meteor }   from 'meteor/meteor';
 import { Template } from 'meteor/templating';
-
+let templatehelpers = {};
 let Session = false;
 try {
   Session = require('meteor/session').Session;
@@ -16,15 +16,12 @@ try {
 }
 
 class TemplateHelpers {
-  constructor() {
-    ['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp'].forEach((name) =>  {
-      this['_is' + name] = (obj) => {
-        return this._toString(obj) === `[object ${name}]`;
-      };
-    });
-  }
+  constructor() {}
   _toString(obj) {
     return Object.prototype.toString.call(obj);
+  }
+  _isString(obj) {
+    return templatehelpers._toString(obj) === '[object String]';
   }
   _isObject(obj) {
     const type = typeof obj;
@@ -40,15 +37,15 @@ class TemplateHelpers {
       throw new Meteor.Error(404, '"session" package is missing, install it first: "meteor add session"');
     }
 
-    if (this._isUndefined(adds)) {
+    if (templatehelpers._isUndefined(adds)) {
       action = 'get';
     }
 
-    if (this._isString(adds)) {
+    if (templatehelpers._isString(adds)) {
       action = 'get';
     }
 
-    if (this._isObject(adds)) {
+    if (templatehelpers._isObject(adds)) {
       action = 'get';
       if (adds.hash && adds.hash.set) {
         action = (adds.hash.action) ? adds.hash.action : 'set';
@@ -81,7 +78,7 @@ class TemplateHelpers {
   }
 
   compare(...args) {
-    if (args[args.length - 1] && this._isObject(args[args.length - 1]) && args[args.length - 1].hasOwnProperty('hash')) {
+    if (args[args.length - 1] && templatehelpers._isObject(args[args.length - 1]) && args[args.length - 1].hasOwnProperty('hash')) {
       args.pop();
     }
 
@@ -97,12 +94,12 @@ class TemplateHelpers {
     let first = args[0];
     let second = args[2];
     const operator = args[1];
-    if (this._isObject(first) && this._isObject(second)) {
+    if (templatehelpers._isObject(first) && templatehelpers._isObject(second)) {
       first = JSON.stringify(first);
       second = JSON.stringify(second);
     }
 
-    if (this._isString(second) && !!~second.indexOf('|')) {
+    if (templatehelpers._isString(second) && !!~second.indexOf('|')) {
       const inclusive = second.split('|');
       for (let j = 0; j < inclusive.length; j++) {
         res.push(templatehelpers.compare(first, operator, inclusive[j]));
@@ -203,7 +200,7 @@ class TemplateHelpers {
     }
 
     if (args.length) {
-      if (this._isObject(args[args.length - 1]) && args[args.length - 1].hasOwnProperty('hash')) {
+      if (templatehelpers._isObject(args[args.length - 1]) && args[args.length - 1].hasOwnProperty('hash')) {
         args.pop();
       }
       const fn = args[0];
@@ -214,7 +211,7 @@ class TemplateHelpers {
   }
 }
 
-const templatehelpers = new TemplateHelpers();
+templatehelpers = new TemplateHelpers();
 
 /*
  * @description Get or set session value from views via Session helper
