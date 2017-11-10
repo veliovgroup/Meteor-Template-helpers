@@ -124,3 +124,9 @@ Execute underscore methods in template
 {{compare 'one' '!=' 'two|one|three|four'}}
 {{compare 'one' '&&' 'two|one|three|four'}}
 ```
+
+Support this project:
+========
+This project wouldn't be possible without [ostr.io](https://ostr.io).
+
+Using [ostr.io](https://ostr.io) you are not only [protecting domain names](https://ostr.io/info/domain-names-protection), [monitoring websites and servers](https://ostr.io/info/monitoring), using [Prerendering for better SEO](https://ostr.io/info/prerendering) of your JavaScript website, but support our Open Source activity, and great packages like this one could be available for free.
