@@ -1,6 +1,6 @@
 Package.describe({
   name: 'ostrio:templatehelpers',
-  version: '2.1.3',
+  version: '2.1.4',
   summary: 'Template helpers for logical operations, variable comparison, Session, underscore and debugging',
   git: 'https://github.com/VeliovGroup/Meteor-Template-helpers',
   documentation: 'README.md'

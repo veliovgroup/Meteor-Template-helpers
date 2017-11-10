@@ -1,14 +1,16 @@
 import { Meteor }   from 'meteor/meteor';
 import { Template } from 'meteor/templating';
+
 let templatehelpers = {};
 let Session = false;
+let _ = false;
+
 try {
   Session = require('meteor/session').Session;
 } catch (e) {
   // session package is not installed
 }
 
-let _ = false;
 try {
   _ = require('meteor/underscore')._;
 } catch (e) {
