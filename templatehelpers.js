@@ -1,7 +1,7 @@
 import { Meteor }   from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 
-let templatehelpers = {};
+const andOperators = ['&&', 'and', '&!', '!&', '!&!', '!&&'];
 let Session = false;
 let _ = false;
 
@@ -23,7 +23,7 @@ class TemplateHelpers {
     return Object.prototype.toString.call(obj);
   }
   _isString(obj) {
-    return templatehelpers._toString(obj) === '[object String]';
+    return this._toString(obj) === '[object String]';
   }
   _isObject(obj) {
     const type = typeof obj;
@@ -39,15 +39,15 @@ class TemplateHelpers {
       throw new Meteor.Error(404, '"session" package is missing, install it first: "meteor add session"');
     }
 
-    if (templatehelpers._isUndefined(adds)) {
+    if (this._isUndefined(adds)) {
       action = 'get';
     }
 
-    if (templatehelpers._isString(adds)) {
+    if (this._isString(adds)) {
       action = 'get';
     }
 
-    if (templatehelpers._isObject(adds)) {
+    if (this._isObject(adds)) {
       action = 'get';
       if (adds.hash && adds.hash.set) {
         action = (adds.hash.action) ? adds.hash.action : 'set';
@@ -80,31 +80,62 @@ class TemplateHelpers {
   }
 
   compare(...args) {
-    if (args[args.length - 1] && templatehelpers._isObject(args[args.length - 1]) && args[args.length - 1].hasOwnProperty('hash')) {
+    if (args[args.length - 1] && this._isObject(args[args.length - 1]) && args[args.length - 1].hasOwnProperty('hash')) {
       args.pop();
     }
 
+    let andIsUsed = false;
     const res = [];
     if (args.length > 3) {
-      res.push(args[0]);
+      let isAnd = false;
+      const andValues = [];
+      const andOperatorsInUse = [];
+
       for (let i = 0; i < args.length - 1; ) {
-        res.push(templatehelpers.compare(res[res.length - 1], args[++i], args[++i]));
+        if (!!~andOperators.indexOf(args[i + 1])) {
+          andOperatorsInUse.push(args[i + 1]);
+          isAnd = true;
+          andValues.push(res.length ? res[res.length - 1] : args[i]);
+          andIsUsed = true;
+          i += 2;
+        } else if (andIsUsed) {
+          andIsUsed = false;
+          if ((args.length - 1) === i) {
+            andValues.push(args[args.length - 1]);
+          } else {
+            const compared = this.compare((res.length ? res[res.length - 1] : args[i]), args[++i], args[++i]);
+            res.push(compared);
+            andValues.push(compared);
+          }
+        } else {
+          res.push(this.compare((res.length ? res[res.length - 1] : args[i]), args[++i], args[++i]));
+        }
       }
+
+      if (isAnd) {
+        const andRes = [];
+        for (let i = 0; i < andValues.length - 1; ) {
+          andRes.push(this.compare(andValues[i], andOperatorsInUse[i], andValues[++i]));
+          ++i;
+        }
+        return andRes[andRes.length - 1];
+      }
+
       return res[res.length - 1];
     }
 
     let first = args[0];
     let second = args[2];
     const operator = args[1];
-    if (templatehelpers._isObject(first) && templatehelpers._isObject(second)) {
+    if (this._isObject(first) && this._isObject(second)) {
       first = JSON.stringify(first);
       second = JSON.stringify(second);
     }
 
-    if (templatehelpers._isString(second) && !!~second.indexOf('|')) {
+    if (this._isString(second) && !!~second.indexOf('|')) {
       const inclusive = second.split('|');
       for (let j = 0; j < inclusive.length; j++) {
-        res.push(templatehelpers.compare(first, operator, inclusive[j]));
+        res.push(this.compare(first, operator, inclusive[j]));
         if (res[res.length - 1] === true) {
           return true;
         }
@@ -202,7 +233,7 @@ class TemplateHelpers {
     }
 
     if (args.length) {
-      if (templatehelpers._isObject(args[args.length - 1]) && args[args.length - 1].hasOwnProperty('hash')) {
+      if (this._isObject(args[args.length - 1]) && args[args.length - 1].hasOwnProperty('hash')) {
         args.pop();
       }
       const fn = args[0];
@@ -213,7 +244,7 @@ class TemplateHelpers {
   }
 }
 
-templatehelpers = new TemplateHelpers();
+const templatehelpers = new TemplateHelpers();
 
 /*
  * @description Get or set session value from views via Session helper
@@ -222,7 +253,7 @@ templatehelpers = new TemplateHelpers();
  * SET: {{Session 'key' set="new value"}}
  * SET Default: {{Session 'key' set="new value" action="setDefault"}}
  */
-Template.registerHelper('Session', templatehelpers.session);
+Template.registerHelper('Session', templatehelpers.session.bind(templatehelpers));
 
 /*
  * @description Debug helper console log
@@ -233,11 +264,11 @@ Template.registerHelper('log', templatehelpers.log);
 /*
  * @description Compare two or more arguments in template
  */
-Template.registerHelper('compare', templatehelpers.compare);
+Template.registerHelper('compare', templatehelpers.compare.bind(templatehelpers));
 
 /*
  * @description Use underscore as a helper
  */
-Template.registerHelper('_', templatehelpers.underscore);
+Template.registerHelper('_', templatehelpers.underscore.bind(templatehelpers));
 
 export { templatehelpers };

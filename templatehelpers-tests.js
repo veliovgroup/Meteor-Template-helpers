@@ -225,6 +225,12 @@ Tinytest.add('compare - many to many', test => {
   test.equal(templatehelpers.compare(1, '>', 0, '>', -1), (1 > 0 > -1), '1 > 0 > -1');
   test.equal(templatehelpers.compare(1, '<', 0, '>', -1), (1 < 0 > -1), '1 < 0 > -1');
   test.equal(templatehelpers.compare(1, '>', 0, '<', -1), (1 > 0 < -1), '1 > 0 < -1');
+  test.equal(templatehelpers.compare(4, 'gte', 1, '&&', 4, 'lte', 6), (4 >= 1 && 4 <= 6), '4 >= 1 && 4 <= 6');
+  test.equal(templatehelpers.compare(4, 'gte', 7, '&&', 4, 'lte', 8), (4 >= 7 && 4 <= 8), '4 >= 7 && 4 <= 8');
+  test.equal(templatehelpers.compare(4, 'gte', 9, '&&', 4, 'lte', 10), (4 >= 9 && 4 <= 10), '4 >= 9 && 4 <= 10');
+  test.equal(templatehelpers.compare(4, 'gte', 9, '&&', 4, 'lte', 10, '&&', false), (4 >= 9 && 4 <= 10 && false), 4 >= 9 && 4 <= 10 && false);
+  test.equal(templatehelpers.compare(4, 'gte', 9, '&&', 4, 'lte', 10, '&&', 40, '>', 30, '&&', true), (4 >= 9 && 4 <= 10 && 40 > 30 && true), '4 >= 9 && 4 <= 10 && 40 > 30 && true');
+  test.equal(templatehelpers.compare(4, 'gte', 9, '&!', 4, 'lte', 10, '&&', 40, '>', 30, '&&', true), (4 >= 9 && !(4 <= 10) && 40 > 30 && true), '4 >= 9 &! 4 <= 10 && 40 > 30 && true');
 });
 
 Tinytest.add('compare - one to many', test => {
