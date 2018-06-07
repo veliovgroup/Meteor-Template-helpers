@@ -1,20 +1,26 @@
-Meteor Template helpers 
-========
-Features:
- - 100% tests coverage
- - Compare values with conditions - `{{#if compare one '===' two}} ... {{/if}}`;
- - Get/set Session - `{{Session 'key' set='value'}}`, `{{#if Session 'key'}} ... {{/if}}`;
- - Use underscore's functions - `{{#if _ 'isString' 'one'}} ... {{/if}}`;
- - Debug/log passed objects as a string to template - `{{log this.someVal 'string' object="value"}}`.
+# Meteor Template helpers
 
-Install:
-========
+__Features:__
+
+  - 100% tests coverage
+  - Lightweight - No external dependencies, all feature helpers has __only__ *weak* dependencies;
+  - Compare values with conditions - `{{#if compare one '===' two}} ... {{/if}}`;
+  - Get/set Session - `{{Session 'key' set='value'}}`, `{{#if Session 'key'}} ... {{/if}}`;
+  - Use underscore's functions - `{{#if _ 'isString' 'one'}} ... {{/if}}`;
+  - Debug/log passed objects as a string to template - `{{log this.someVal 'string' object="value"}}`.
+
+## Install:
+
 ```shell
 meteor add ostrio:templatehelpers
 ```
 
-#### `Session`
+## Helpers
+
+### `Session`
+
 Get or set session value from views via Session helper
+
 ```handlebars
 <!-- To get value -->
 {{Session 'key'}}
@@ -26,22 +32,28 @@ Get or set session value from views via Session helper
 {{Session 'key' set="new value" action="setDefault"}}
 ```
 
-#### `log`
+### `log`
+
 Template debugging - Log arguments into browser's console with output into template
+
 ```handlebars
 {{log 'val' opt='val2' opt2=variable}}
 ```
 
-#### Underscore (all methods)
+### Underscore (all methods)
+
 Execute underscore methods in template
+
 ```handlebars
 {{#if _ 'isString' 'one'}}
   ...
 {{/if}}
 ```
 
-#### Compare helpers
-##### Compare two values in template
+### Compare helpers
+
+#### Compare two values in template
+
 ```handlebars
 {{#if compare 'one' '>' 'two'}}
   <!-- ... -->
@@ -98,7 +110,8 @@ Execute underscore methods in template
 {{compare 'one' 'nxor' 'two'}} <!-- !((a && !b) || (!a && b)) -->
 ```
 
-##### Compare many to many
+#### Compare many to many
+
 ```handlebars
 {{#if compare 1 '>' 2 '&&' 5 '<' 8}}
   <!-- ... -->
@@ -110,7 +123,8 @@ Execute underscore methods in template
 <!-- Any combinations will work, above just basic examples -->
 ```
 
-##### Compare one value to many (any of.. match)
+#### Compare one value to many (any of.. match)
+
 ```handlebars
 {{#if compare 'one' '>' 'two|one|three|four|five'}}
   <!-- ... -->
@@ -125,8 +139,8 @@ Execute underscore methods in template
 {{compare 'one' '&&' 'two|one|three|four'}}
 ```
 
-Support this project:
-========
+### Support this project:
+
 This project wouldn't be possible without [ostr.io](https://ostr.io).
 
 Using [ostr.io](https://ostr.io) you are not only [protecting domain names](https://ostr.io/info/domain-names-protection), [monitoring websites and servers](https://ostr.io/info/monitoring), using [Prerendering for better SEO](https://ostr.io/info/prerendering) of your JavaScript website, but support our Open Source activity, and great packages like this one could be available for free.
