@@ -2,12 +2,12 @@
 
 __Features:__
 
-  - 100% tests coverage
-  - Lightweight - No external dependencies, all feature helpers has __only__ *weak* dependencies;
-  - Compare values with conditions - `{{#if compare one '===' two}} ... {{/if}}`;
-  - Get/set Session - `{{Session 'key' set='value'}}`, `{{#if Session 'key'}} ... {{/if}}`;
-  - Use underscore's functions - `{{#if _ 'isString' 'one'}} ... {{/if}}`;
-  - Debug/log passed objects as a string to template - `{{log this.someVal 'string' object="value"}}`.
+  - 👷‍♂️ 100% tests coverage
+  - 💡 Lightweight - No external dependencies, all feature helpers has __only__ *weak* dependencies;
+  - ⚖️ Compare values with conditions - `{{#if compare one '===' two}} ... {{/if}}`;
+  - 🐒 Get/set Session - `{{Session 'key' set='value'}}`, `{{#if Session 'key'}} ... {{/if}}`;
+  - 🔨 Use underscore's functions - `{{#if _ 'isString' 'one'}} ... {{/if}}`;
+  - 👨‍💻 Debug/log passed objects as a string to template - `{{log this.someVal 'string' object="value"}}`.
 
 ## Install:
 
