@@ -1,5 +1,5 @@
 import { Meteor }          from 'meteor/meteor';
-import { templatehelpers } from 'meteor/ostrio:templatehelpers';
+import { templatehelpers } from './templatehelpers.js';
 
 if (Meteor.isServer) {
   return;

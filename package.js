@@ -1,6 +1,6 @@
 Package.describe({
   name: 'ostrio:templatehelpers',
-  version: '2.2.1',
+  version: '2.2.2',
   summary: 'Template helpers for logical operations, variable comparison, Session, underscore and debugging',
   git: 'https://github.com/VeliovGroup/Meteor-Template-helpers',
   documentation: 'README.md'
@@ -14,6 +14,6 @@ Package.onUse(function (api) {
 });
 
 Package.onTest(function (api) {
-  api.use(['ecmascript', 'tinytest', 'underscore', 'session', 'ostrio:templatehelpers'], 'client');
+  api.use(['templating', 'ecmascript', 'tinytest', 'underscore', 'session'], 'client');
   api.addFiles('templatehelpers-tests.js', 'client');
 });
