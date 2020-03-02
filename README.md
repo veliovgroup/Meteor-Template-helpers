@@ -2,12 +2,12 @@
 
 __Features:__
 
-  - 👷‍♂️ 100% tests coverage
-  - 💡 Lightweight - No external dependencies, all feature helpers has __only__ *weak* dependencies;
-  - ⚖️ Compare values with conditions - `{{#if compare one '===' two}} ... {{/if}}`;
-  - 🐒 Get/set Session - `{{Session 'key' set='value'}}`, `{{#if Session 'key'}} ... {{/if}}`;
-  - 🔨 Use underscore's functions - `{{#if _ 'isString' 'one'}} ... {{/if}}`;
-  - 👨‍💻 Debug/log passed objects as a string to template - `{{log this.someVal 'string' object="value"}}`.
+- 👨‍🔬 __100% tests coverage__;
+- 💡 Lightweight - No external dependencies, all feature helpers has __only__ *weak* dependencies;
+- ⚖️ Compare values with conditions - `{{#if compare one '===' two}} ... {{/if}}`;
+- 🐒 Get/set Session (*weak dependency*) - `{{Session 'key' set='value'}}`, `{{#if Session 'key'}} ... {{/if}}`;
+- 🔨 Use underscore's functions (*weak dependency*) - `{{#if _ 'isString' 'one'}} ... {{/if}}`;
+- 👨‍💻 Debug/log passed objects as a string to template - `{{log this.someVal 'string' object="value"}}`.
 
 ## Install:
 
@@ -139,8 +139,23 @@ Execute underscore methods in template
 {{compare 'one' '&&' 'two|one|three|four'}}
 ```
 
+## Running Tests
+
+1. Clone this package
+2. In Terminal (*Console*) go to directory where package is cloned
+3. Then run:
+
+### Meteor/Tinytest
+
+```shell
+# Default
+meteor test-packages ./
+
+# With custom port
+meteor test-packages ./ --port 8888
+```
+
 ### Support this project:
 
-This project wouldn't be possible without [ostr.io](https://ostr.io).
-
-Using [ostr.io](https://ostr.io) you are not only [protecting domain names](https://ostr.io/info/domain-names-protection), [monitoring websites and servers](https://ostr.io/info/monitoring), using [Prerendering for better SEO](https://ostr.io/info/prerendering) of your JavaScript website, but support our Open Source activity, and great packages like this one could be available for free.
+- [Become a patron](https://www.patreon.com/bePatron?u=20396046) — support my open source contributions with monthly donation
+- Use [ostr.io](https://ostr.io) — [Monitoring](https://snmp-monitoring.com), [Analytics](https://ostr.io/info/web-analytics), [WebSec](https://domain-protection.info), [Web-CRON](https://web-cron.info) and [Pre-rendering](https://prerendering.com) for a website
