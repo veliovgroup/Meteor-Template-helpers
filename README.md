@@ -1,3 +1,9 @@
+[![support](https://img.shields.io/badge/support-GitHub-white)](https://github.com/sponsors/dr-dimitru)
+[![support](https://img.shields.io/badge/support-PayPal-white)](https://paypal.me/veliovgroup)
+<a href="https://ostr.io/info/built-by-developers-for-developers">
+  <img src="https://ostr.io/apple-touch-icon-60x60.png" height="20">
+</a>
+
 # Meteor Template helpers
 
 __Features:__
@@ -16,6 +22,8 @@ meteor add ostrio:templatehelpers
 ```
 
 ## Helpers
+
+Use comparison, conditional, and logical operations right in the Blaze templates. Get access to `Session` object ans stored values. Execute `underscore` package methods. And debug Blaze templating data using `log` helper.
 
 ### `Session`
 
@@ -50,7 +58,9 @@ Execute underscore methods in template
 {{/if}}
 ```
 
-### Compare helpers
+### Comparison helpers
+
+Compare template data. Create conditional `if` and `unless` blocks.
 
 #### Compare two values in template
 
@@ -112,6 +122,8 @@ Execute underscore methods in template
 
 #### Compare many to many
 
+Compare complex template data.
+
 ```handlebars
 {{#if compare 1 '>' 2 '&&' 5 '<' 8}}
   <!-- ... -->
@@ -124,6 +136,8 @@ Execute underscore methods in template
 ```
 
 #### Compare one value to many (any of.. match)
+
+Compare single value against many (*any of.. match*).
 
 ```handlebars
 {{#if compare 'one' '>' 'two|one|three|four|five'}}
@@ -155,7 +169,8 @@ meteor test-packages ./
 meteor test-packages ./ --port 8888
 ```
 
-### Support this project:
+### Support our open source contribution
 
-- [Become a patron](https://www.patreon.com/bePatron?u=20396046) — support my open source contributions with monthly donation
-- Use [ostr.io](https://ostr.io) — [Monitoring](https://snmp-monitoring.com), [Analytics](https://ostr.io/info/web-analytics), [WebSec](https://domain-protection.info), [Web-CRON](https://web-cron.info) and [Pre-rendering](https://prerendering.com) for a website
+- [Sponsor via GitHub](https://github.com/sponsors/dr-dimitru)
+- [Support via PayPal](https://paypal.me/veliovgroup) — support my open source contributions once or on regular basis
+- Use [ostr.io](https://ostr.io) — [Monitoring](https://snmp-monitoring.com), [Analytics](https://ostr.io/info/web-analytics), [WebSec](https://domain-protection.info), [Web-CRON](https://web-cron.info) and [Pre-rendering](https://prerendering.com) for a websiteWebSec](https://domain-protection.info), [Web-CRON](https://web-cron.info) and [Pre-rendering](https://prerendering.com) for a website
