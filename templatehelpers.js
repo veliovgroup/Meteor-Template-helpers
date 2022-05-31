@@ -1,4 +1,4 @@
-import { Meteor }   from 'meteor/meteor';
+import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 
 const andOperators = ['&&', 'and', '&!', '!&', '!&!', '!&&'];
@@ -70,7 +70,6 @@ class TemplateHelpers {
   }
 
   log(...args) {
-    console.log('arguments: ', args, 'this: ', this);
     const key = args.shift();
     try {
       return `${JSON.stringify(key, null, 2)} | ${JSON.stringify(args, null, 2)}`;
@@ -246,29 +245,33 @@ class TemplateHelpers {
 
 const templatehelpers = new TemplateHelpers();
 
-/*
+/**
  * @description Get or set session value from views via Session helper
  * @example
  * GET: {{Session 'key'}}
  * SET: {{Session 'key' set="new value"}}
  * SET Default: {{Session 'key' set="new value" action="setDefault"}}
  */
-Template.registerHelper('Session', templatehelpers.session.bind(templatehelpers));
+if (Session) {
+  Template.registerHelper('Session', templatehelpers.session.bind(templatehelpers));
+}
 
-/*
+/**
  * @description Debug helper console log
  * and return passed objects as a string
  */
 Template.registerHelper('log', templatehelpers.log);
 
-/*
+/**
  * @description Compare two or more arguments in template
  */
 Template.registerHelper('compare', templatehelpers.compare.bind(templatehelpers));
 
-/*
+/**
  * @description Use underscore as a helper
  */
-Template.registerHelper('_', templatehelpers.underscore.bind(templatehelpers));
+if (_) {
+  Template.registerHelper('_', templatehelpers.underscore.bind(templatehelpers));
+}
 
 export { templatehelpers };
