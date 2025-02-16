@@ -1,8 +1,7 @@
 [![support](https://img.shields.io/badge/support-GitHub-white)](https://github.com/sponsors/dr-dimitru)
 [![support](https://img.shields.io/badge/support-PayPal-white)](https://paypal.me/veliovgroup)
-<a href="https://ostr.io/info/built-by-developers-for-developers">
-  <img src="https://ostr.io/apple-touch-icon-60x60.png" height="20">
-</a>
+<a href="https://ostr.io/info/built-by-developers-for-developers?ref=github-templatehelpers-repo-top"><img src="https://ostr.io/apple-touch-icon-60x60.png" alt="ostr.io free for open source maintainers" height="20"></a>
+<a href="https://meteor-files.com/?ref=github-templatehelpers-repo-top"><img src="https://meteor-files.com/apple-touch-icon-60x60.png" alt="meteor-files.com" height="20"></a>
 
 # Meteor Template helpers
 
@@ -24,39 +23,6 @@ meteor add ostrio:templatehelpers
 ## Helpers
 
 Use comparison, conditional, and logical operations right in the Blaze templates. Get access to `Session` object ans stored values. Execute `underscore` package methods. And debug Blaze templating data using `log` helper.
-
-### `Session`
-
-Get or set session value from views via Session helper
-
-```handlebars
-<!-- To get value -->
-{{Session 'key'}}
-
-<!-- To set value -->
-{{Session 'key' set="new value"}}
-
-<!-- To set default value -->
-{{Session 'key' set="new value" action="setDefault"}}
-```
-
-### `log`
-
-Template debugging - Log arguments into browser's console with output into template
-
-```handlebars
-{{log 'val' opt='val2' opt2=variable}}
-```
-
-### Underscore (all methods)
-
-Execute underscore methods in template
-
-```handlebars
-{{#if _ 'isString' 'one'}}
-  ...
-{{/if}}
-```
 
 ### Comparison helpers
 
@@ -153,6 +119,45 @@ Compare single value against many (*any of.. match*).
 {{compare 'one' '&&' 'two|one|three|four'}}
 ```
 
+### `log`
+
+Template debugging - Log arguments into browser's console with output into template
+
+```handlebars
+{{log 'val' opt='val2' opt2=variable}}
+```
+
+Add `true` as last argument to log values into JS-console
+
+```handlebars
+{{log 'val' opt='val2' opt2=variable console=true}}
+```
+
+### `Session`
+
+Get or set session value from views via Session helper
+
+```handlebars
+<!-- To get value -->
+{{Session 'key'}}
+
+<!-- To set value -->
+{{Session 'key' set="new value"}}
+
+<!-- To set default value -->
+{{Session 'key' set="new value" action="setDefault"}}
+```
+
+### Underscore (all methods)
+
+Execute underscore methods in template
+
+```handlebars
+{{#if _ 'isString' 'one'}}
+  ...
+{{/if}}
+```
+
 ## Running Tests
 
 1. Clone this package
@@ -169,8 +174,9 @@ meteor test-packages ./
 meteor test-packages ./ --port 8888
 ```
 
-### Support our open source contribution
-
+- Upload and share files using [☄️ meteor-files.com](https://meteor-files.com/?ref=github-templatehelpers-repo-footer) — Continue interrupted file uploads without losing any progress. There is nothing that will stop Meteor from delivering your file to the desired destination
+- Use [▲ ostr.io](https://ostr.io?ref=github-templatehelpers-repo-footer) for [Server Monitoring](https://snmp-monitoring.com), [Web Analytics](https://ostr.io/info/web-analytics?ref=github-templatehelpers-repo-footer), [WebSec](https://domain-protection.info), [Web-CRON](https://web-cron.info), and [SEO Pre-rendering](https://prerendering.com) of a website
+- Star on [GitHub](https://github.com/veliovgroup/Meteor-Template-helpers)
+- Star on [Atmosphere](https://atmospherejs.com/ostrio/templatehelpers)
 - [Sponsor via GitHub](https://github.com/sponsors/dr-dimitru)
 - [Support via PayPal](https://paypal.me/veliovgroup)
-- Use [ostr.io](https://ostr.io) — [Monitoring](https://snmp-monitoring.com), [Analytics](https://ostr.io/info/web-analytics), [WebSec](https://domain-protection.info), [Web-CRON](https://web-cron.info) and [Pre-rendering](https://prerendering.com) for a website
