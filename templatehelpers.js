@@ -7,13 +7,13 @@ let _ = false;
 
 try {
   Session = require('meteor/session').Session;
-} catch (e) {
+} catch (_e) {
   // session package is not installed
 }
 
 try {
   _ = require('meteor/underscore')._;
-} catch (e) {
+} catch (_e) {
   // underscore package is not installed
 }
 
@@ -71,9 +71,14 @@ class TemplateHelpers {
 
   log(...args) {
     const key = args.shift();
+    if (typeof args[args.length - 1] === 'object' && args[args.length - 1]?.hash?.console === true) {
+      delete args[args.length - 1].hash.console;
+      console.debug('[ostrio:templatehelpers] [LOG]', key, ...args);
+    }
+
     try {
       return `${JSON.stringify(key, null, 2)} | ${JSON.stringify(args, null, 2)}`;
-    } catch (e) {
+    } catch (_e) {
       return `${key} | ${args}`;
     }
   }

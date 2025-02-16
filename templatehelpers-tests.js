@@ -1,4 +1,4 @@
-import { Meteor }          from 'meteor/meteor';
+import { Meteor } from 'meteor/meteor';
 import { templatehelpers } from './templatehelpers.js';
 
 if (Meteor.isServer) {
