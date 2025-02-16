@@ -127,7 +127,7 @@ Template debugging - Log arguments into browser's console with output into templ
 {{log 'val' opt='val2' opt2=variable}}
 ```
 
-Add `true` as last argument to log values into JS-console
+Add `console=true` as an argument to log values into JS-console
 
 ```handlebars
 {{log 'val' opt='val2' opt2=variable console=true}}
