@@ -164,6 +164,16 @@ Execute underscore methods in template
 2. In Terminal (*Console*) go to directory where package is cloned
 3. Then run:
 
+### Meteor/Tinytest
+
+```shell
+# Default
+meteor test-packages ./
+
+# With custom port
+meteor test-packages ./ --port 8888
+```
+
 ### NPM/mtest
 
 ```shell
