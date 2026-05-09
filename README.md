@@ -164,14 +164,10 @@ Execute underscore methods in template
 2. In Terminal (*Console*) go to directory where package is cloned
 3. Then run:
 
-### Meteor/Tinytest
+### NPM/mtest
 
 ```shell
-# Default
-meteor test-packages ./
-
-# With custom port
-meteor test-packages ./ --port 8888
+npm test
 ```
 
 - Upload and share files using [☄️ meteor-files.com](https://meteor-files.com/?ref=github-templatehelpers-repo-footer) — Continue interrupted file uploads without losing any progress. There is nothing that will stop Meteor from delivering your file to the desired destination
