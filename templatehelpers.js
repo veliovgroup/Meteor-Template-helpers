@@ -49,9 +49,9 @@ class TemplateHelpers {
 
     if (this._isObject(adds)) {
       action = 'get';
-      if (adds.hash && adds.hash.set) {
+      if (adds.hash && adds.hash.hasOwnProperty('set')) {
         action = (adds.hash.action) ? adds.hash.action : 'set';
-        set = adds.hash.set || undefined;
+        set = adds.hash.set;
       }
     }
 
@@ -114,6 +114,10 @@ class TemplateHelpers {
         } else {
           res.push(this.compare((res.length ? res[res.length - 1] : args[i]), args[++i], args[++i]));
         }
+      }
+
+      if (andIsUsed && andValues.length === andOperatorsInUse.length) {
+        andValues.push(args[args.length - 1]);
       }
 
       if (isAnd) {
