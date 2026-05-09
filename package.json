@@ -1,0 +1,11 @@
+{
+  "name": "ostrio-templatehelpers",
+  "version": "2.2.4",
+  "private": true,
+  "scripts": {
+    "test": "mtest --package ./ --once"
+  },
+  "devDependencies": {
+    "@zodern/mtest": "^0.5.1"
+  }
+}
