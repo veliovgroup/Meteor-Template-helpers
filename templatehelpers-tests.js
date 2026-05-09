@@ -221,6 +221,8 @@ Tinytest.add('compare - many to many', test => {
   test.equal(templatehelpers.compare(true, '||', false, '||', 'asd'), (true || false || 'asd'), "true || false || 'asd'");
   test.equal(templatehelpers.compare('asd', '&&', false, '&&', 3), ('asd' && false && 3), "'asd' && false && 3");
   test.equal(templatehelpers.compare('dsa', '&&', 2, '||', true), ('dsa' && 2 || true), "'dsa' && 2 || true");
+  test.equal(templatehelpers.compare(false, '||', 'x', '&&', 'y'), (false || 'x' && 'y'), "false || 'x' && 'y'");
+  test.equal(templatehelpers.compare(1, '>', 2, '||', 5, '<', 8, '&&', false), (1 > 2 || 5 < 8 && false), '1 > 2 || 5 < 8 && false');
   test.equal(templatehelpers.compare(1, '<', 0, '<', -1), (1 < 0 < -1), '1 < 0 < -1');
   test.equal(templatehelpers.compare(1, '>', 0, '>', -1), (1 > 0 > -1), '1 > 0 > -1');
   test.equal(templatehelpers.compare(1, '<', 0, '>', -1), (1 < 0 > -1), '1 < 0 > -1');
@@ -278,9 +280,16 @@ Tinytest.add('Session - Set', test => {
       set: 'Valuerr'
     }
   }), void 0);
+
+  test.equal(templatehelpers.session('falsyKey', {
+    hash: {
+      set: false
+    }
+  }), void 0);
 });
 
 Tinytest.add('Session - Get', test => {
   test.equal(templatehelpers.session('Keyrr'), 'Valuerr');
   test.equal(templatehelpers.session('defaultKey'), 'defaultVal');
+  test.equal(templatehelpers.session('falsyKey'), false);
 });
