@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 
 const andOperators = ['&&', 'and', '&!', '!&', '!&!', '!&&', 'nand'];
-const logicalOperators = andOperators.concat(['||', 'or', '!|', '|!', '!|!', '!||', 'nor', 'xor', 'nxor']);
+const logicalOperators = [...andOperators, '||', 'or', '!|', '|!', '!|!', '!||', 'nor', 'xor', 'nxor'];
 let Session = false;
 let _ = false;
 
@@ -33,7 +33,7 @@ class TemplateHelpers {
   }
 
   _isUndefined(obj) {
-    return obj === void 0;
+    return obj === undefined;
   }
 
   _hasOwn(obj, prop) {
@@ -45,11 +45,11 @@ class TemplateHelpers {
   }
 
   _isLogicalOperator(operator) {
-    return !!~logicalOperators.indexOf(operator);
+    return logicalOperators.includes(operator);
   }
 
   _isAndOperator(operator) {
-    return !!~andOperators.indexOf(operator);
+    return andOperators.includes(operator);
   }
 
   _stripHashArg(args) {
@@ -89,7 +89,7 @@ class TemplateHelpers {
       const operator = args[i];
       const second = args[i + 1];
 
-      if (isOperator.call(this, operator)) {
+      if (isOperator(operator)) {
         res.push(this.compare(res.pop(), operator, second));
       } else {
         res.push(operator, second);
@@ -125,11 +125,11 @@ class TemplateHelpers {
     switch (action) {
     case 'setDefault':
       Session.setDefault(key, set);
-      return void 0;
+      return undefined;
 
     case 'set':
       Session.set(key, set);
-      return void 0;
+      return undefined;
 
     default:
       return Session.get(key);
@@ -179,10 +179,9 @@ class TemplateHelpers {
       second = JSON.stringify(second);
     }
 
-    if (this._isString(second) && !!~second.indexOf('|')) {
-      const inclusive = second.split('|');
-      for (let j = 0; j < inclusive.length; j++) {
-        res.push(this.compare(first, operator, inclusive[j]));
+    if (this._isString(second) && second.includes('|')) {
+      for (const inclusiveValue of second.split('|')) {
+        res.push(this.compare(first, operator, inclusiveValue));
         if (res[res.length - 1] === true) {
           return true;
         }
@@ -281,11 +280,10 @@ class TemplateHelpers {
 
     if (args.length) {
       args = this._stripHashArg(args);
-      const fn = args[0];
-      args.shift();
-      return _[fn].apply(_, args);
+      const [fn, ...fnArgs] = args;
+      return _[fn](...fnArgs);
     }
-    return void 0;
+    return undefined;
   }
 }
 
