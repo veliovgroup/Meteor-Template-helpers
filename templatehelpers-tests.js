@@ -235,6 +235,11 @@ Tinytest.add('compare - many to many', test => {
   test.equal(templatehelpers.compare(4, 'gte', 9, '&!', 4, 'lte', 10, '&&', 40, '>', 30, '&&', true), (4 >= 9 && !(4 <= 10) && 40 > 30 && true), '4 >= 9 &! 4 <= 10 && 40 > 30 && true');
 });
 
+Tinytest.add('compare - many to many precedence', test => {
+  test.equal(templatehelpers.compare(4, 'gte', 1, '&&', 10, 'lte', 6), (4 >= 1 && 10 <= 6), '4 >= 1 && 10 <= 6');
+  test.equal(templatehelpers.compare(true, '||', false, 'nand', true), (true || !(false && true)), 'true || false nand true');
+});
+
 Tinytest.add('compare - one to many', test => {
   test.isTrue(templatehelpers.compare(1, '>', '0|-1|-2'), "1, '>', '0|-1|-2'");
   test.isFalse(templatehelpers.compare(1, '>', '2|3|4'), "1, '>', '2|3|4'");
@@ -265,6 +270,21 @@ Tinytest.add('underscore - Collections', test => {
   test.equal(templatehelpers.underscore('min', [40, 60, 70, 600]), 40, 'min');
 });
 
+Tinytest.add('log - does not mutate helper options', test => {
+  const options = {
+    hash: {
+      console: true,
+      label: 'keep'
+    }
+  };
+
+  templatehelpers.log('value', options);
+  test.equal(options.hash, {
+    console: true,
+    label: 'keep'
+  });
+});
+
 Tinytest.add('Session - Set Default', test => {
   test.equal(templatehelpers.session('defaultKey', {
     hash: {
@@ -286,10 +306,19 @@ Tinytest.add('Session - Set', test => {
       set: false
     }
   }), void 0);
+
+  const hash = Object.create(null);
+  hash.set = 'shadowVal';
+  hash.hasOwnProperty = false;
+
+  test.equal(templatehelpers.session('shadowKey', {
+    hash
+  }), void 0);
 });
 
 Tinytest.add('Session - Get', test => {
   test.equal(templatehelpers.session('Keyrr'), 'Valuerr');
   test.equal(templatehelpers.session('defaultKey'), 'defaultVal');
   test.equal(templatehelpers.session('falsyKey'), false);
+  test.equal(templatehelpers.session('shadowKey'), 'shadowVal');
 });
