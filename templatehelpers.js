@@ -1,7 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 
-const andOperators = ['&&', 'and', '&!', '!&', '!&!', '!&&'];
+const andOperators = ['&&', 'and', '&!', '!&', '!&!', '!&&', 'nand'];
+const logicalOperators = andOperators.concat(['||', 'or', '!|', '|!', '!|!', '!||', 'nor', 'xor', 'nxor']);
 let Session = false;
 let _ = false;
 
@@ -18,20 +19,86 @@ try {
 }
 
 class TemplateHelpers {
-  constructor() {}
   _toString(obj) {
     return Object.prototype.toString.call(obj);
   }
+
   _isString(obj) {
     return this._toString(obj) === '[object String]';
   }
+
   _isObject(obj) {
     const type = typeof obj;
     return type === 'function' || type === 'object' && !!obj;
   }
+
   _isUndefined(obj) {
     return obj === void 0;
   }
+
+  _hasOwn(obj, prop) {
+    return Object.prototype.hasOwnProperty.call(obj, prop);
+  }
+
+  _hasHash(obj) {
+    return this._isObject(obj) && this._hasOwn(obj, 'hash');
+  }
+
+  _isLogicalOperator(operator) {
+    return !!~logicalOperators.indexOf(operator);
+  }
+
+  _isAndOperator(operator) {
+    return !!~andOperators.indexOf(operator);
+  }
+
+  _stripHashArg(args) {
+    if (args.length && this._hasHash(args[args.length - 1])) {
+      args.pop();
+    }
+    return args;
+  }
+
+  _evaluateComparisonGroups(args) {
+    const grouped = [];
+
+    for (let i = 0; i < args.length; ) {
+      let value = args[i];
+
+      while (i + 2 < args.length && !this._isLogicalOperator(args[i + 1])) {
+        value = this.compare(value, args[i + 1], args[i + 2]);
+        i += 2;
+      }
+
+      grouped.push(value);
+
+      if (i + 1 < args.length) {
+        grouped.push(args[i + 1]);
+      }
+
+      i += 2;
+    }
+
+    return grouped;
+  }
+
+  _evaluateOperators(args, isOperator) {
+    const res = [args[0]];
+
+    for (let i = 1; i < args.length; i += 2) {
+      const operator = args[i];
+      const second = args[i + 1];
+
+      if (isOperator.call(this, operator)) {
+        res.push(this.compare(res.pop(), operator, second));
+      } else {
+        res.push(operator, second);
+      }
+    }
+
+    return res;
+  }
+
   session(key, adds) {
     let set;
     let action;
@@ -49,7 +116,7 @@ class TemplateHelpers {
 
     if (this._isObject(adds)) {
       action = 'get';
-      if (adds.hash && adds.hash.hasOwnProperty('set')) {
+      if (adds.hash && this._hasOwn(adds.hash, 'set')) {
         action = (adds.hash.action) ? adds.hash.action : 'set';
         set = adds.hash.set;
       }
@@ -71,65 +138,37 @@ class TemplateHelpers {
 
   log(...args) {
     const key = args.shift();
-    if (typeof args[args.length - 1] === 'object' && args[args.length - 1]?.hash?.console === true) {
-      delete args[args.length - 1].hash.console;
-      console.debug('[ostrio:templatehelpers] [LOG]', key, ...args);
+    let outputArgs = args;
+
+    if (this._hasHash(args[args.length - 1]) && args[args.length - 1].hash.console === true) {
+      outputArgs = args.slice();
+      outputArgs[outputArgs.length - 1] = {
+        ...outputArgs[outputArgs.length - 1],
+        hash: {
+          ...outputArgs[outputArgs.length - 1].hash
+        }
+      };
+      delete outputArgs[outputArgs.length - 1].hash.console;
+      console.debug('[ostrio:templatehelpers] [LOG]', key, ...outputArgs);
     }
 
     try {
-      return `${JSON.stringify(key, null, 2)} | ${JSON.stringify(args, null, 2)}`;
+      return `${JSON.stringify(key, null, 2)} | ${JSON.stringify(outputArgs, null, 2)}`;
     } catch (_e) {
-      return `${key} | ${args}`;
+      return `${key} | ${outputArgs}`;
     }
   }
 
   compare(...args) {
-    if (args[args.length - 1] && this._isObject(args[args.length - 1]) && args[args.length - 1].hasOwnProperty('hash')) {
-      args.pop();
-    }
-
-    let andIsUsed = false;
+    args = this._stripHashArg(args);
     const res = [];
+
     if (args.length > 3) {
-      let isAnd = false;
-      const andValues = [];
-      const andOperatorsInUse = [];
+      const grouped = this._evaluateComparisonGroups(args);
+      const andEvaluated = this._evaluateOperators(grouped, this._isAndOperator);
+      const evaluated = this._evaluateOperators(andEvaluated, operator => true);
 
-      for (let i = 0; i < args.length - 1; ) {
-        if (!!~andOperators.indexOf(args[i + 1])) {
-          andOperatorsInUse.push(args[i + 1]);
-          isAnd = true;
-          andValues.push(res.length ? res[res.length - 1] : args[i]);
-          andIsUsed = true;
-          i += 2;
-        } else if (andIsUsed) {
-          andIsUsed = false;
-          if ((args.length - 1) === i) {
-            andValues.push(args[args.length - 1]);
-          } else {
-            const compared = this.compare((res.length ? res[res.length - 1] : args[i]), args[++i], args[++i]);
-            res.push(compared);
-            andValues.push(compared);
-          }
-        } else {
-          res.push(this.compare((res.length ? res[res.length - 1] : args[i]), args[++i], args[++i]));
-        }
-      }
-
-      if (andIsUsed && andValues.length === andOperatorsInUse.length) {
-        andValues.push(args[args.length - 1]);
-      }
-
-      if (isAnd) {
-        const andRes = [];
-        for (let i = 0; i < andValues.length - 1; ) {
-          andRes.push(this.compare(andValues[i], andOperatorsInUse[i], andValues[++i]));
-          ++i;
-        }
-        return andRes[andRes.length - 1];
-      }
-
-      return res[res.length - 1];
+      return evaluated[evaluated.length - 1];
     }
 
     let first = args[0];
@@ -241,9 +280,7 @@ class TemplateHelpers {
     }
 
     if (args.length) {
-      if (this._isObject(args[args.length - 1]) && args[args.length - 1].hasOwnProperty('hash')) {
-        args.pop();
-      }
+      args = this._stripHashArg(args);
       const fn = args[0];
       args.shift();
       return _[fn].apply(_, args);
@@ -269,7 +306,7 @@ if (Session) {
  * @description Debug helper console log
  * and return passed objects as a string
  */
-Template.registerHelper('log', templatehelpers.log);
+Template.registerHelper('log', templatehelpers.log.bind(templatehelpers));
 
 /**
  * @description Compare two or more arguments in template
